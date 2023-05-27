@@ -18,7 +18,7 @@ function onSearch(e) {
   apiService.resetTotal();
 
   apiService.getElements().then(data => {
-    if (data.hits.length === 0) {
+    if (data.hits.length === 0 || apiService.query === '') {
       Notiflix.Notify.failure(
         `Sorry, there are no images matching your search query: ${apiService.searchQuery}. Please try again.`
       );
