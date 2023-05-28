@@ -46,15 +46,21 @@ function onSearch(e) {
 
 function onLoadMore() {
   apiService.getElements().then(data => {
-    apiService.total = data.hits.length;
+    apiService.total += data.hits.length;
+
+    const markup = onCreateGalleryItem(data);
+    refs.galleryMarkup.insertAdjacentHTML('beforeend', markup);
+    lightbox.refresh();
     if (apiService.total === data.totalHits) {
       refs.loadMore.style.visibility = 'hidden';
-
       Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
       );
+      return;
     }
-    const markup = onCreateGalleryItem(data);
-    refs.galleryMarkup.insertAdjacentHTML('beforeend', markup);
+
+    if (apiService.total !== data.totalHits) {
+      refs.loadMore.style.visibility = 'visible';
+    }
   });
 }
